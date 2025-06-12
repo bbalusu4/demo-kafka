@@ -1,0 +1,17 @@
+# Docker
+.docker/
+*.log
+*.swp
+.DS_Store
+target/
+build/
+dist/
+.idea/
+.vscode/
+
+# Kafka related (if you ever ran it without Docker)
+# /tmp/kafka-logs/
+# /tmp/kraft-combined-logs/
+# /tmp/zookeeper/
+server.properties
+
