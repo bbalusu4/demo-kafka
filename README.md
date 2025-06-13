@@ -1,43 +1,29 @@
 # Local Kafka Demo Cluster
 
 This repository provides a simple, self-contained Apache Kafka cluster setup using Docker Compose. It's designed for local development, testing, and demonstration purposes.
+This repo uses KRAft mode for kafka cluster
 
 ## Prerequisites
 
-* [Docker Desktop](https://www.docker.com/products/docker-desktop) (or Docker Engine for Linux) installed and running.
+* [Docker Desktop](https://www.docker.com/products/docker-desktop) (or Docker Engine for Linux) installed and running.(in my case i have podman running in my local)
 
 ## Getting Started
-
-1.  **Clone the Repository:**
-    ```bash
-    git clone [https://github.com/your-username/kafka-local-demo.git](https://github.com/your-username/kafka-local-demo.git)
-    cd kafka-local-demo
-    ```
-
 2.  **Start the Kafka Cluster:**
     This command will bring up the Kafka broker and Kafka UI.
 
     ```bash
-    docker compose up -d
+    podman-compose -f docker-compose-kraft.yaml up -d
     ```
     *The first time you run this, Docker will download the necessary images, which might take a few minutes.*
 
 3.  **Verify Cluster Status (Optional):**
     ```bash
-    docker ps
+    podman ps
     ```
-    You should see `broker` and `kafka-ui` containers running.
-
-4.  **Access Kafka UI:**
-    Open your web browser and go to: [http://localhost:8080](http://localhost:8080)
-    You should see the `local-kafka` cluster pre-configured.
-
-## Interacting with Kafka
-
-You can use the provided helper scripts or Kafka's `bin` utilities (if you have them installed locally) to interact with the cluster.
+    You should see `kafka`
 
 **Using Helper Scripts (Recommended):**
-
+**(PENDING) copy to the container**
 * **Create a Topic:**
     ```bash
     ./scripts/create-topic.sh my-test-topic
@@ -71,4 +57,4 @@ If you have a local Kafka installation, you can directly use its `bin` utilities
 /path/to/your/kafka/bin/kafka-console-producer.sh --topic another-topic --bootstrap-server localhost:9092
 
 # Example: Consume
-# /path/to/your/kafka/bin/kafka-console-consumer.sh --topic another-topic --bootstrap-server localhost:9092 --from-beginning
+/path/to/your/kafka/bin/kafka-console-consumer.sh --topic another-topic --bootstrap-server localhost:9092 --from-beginning

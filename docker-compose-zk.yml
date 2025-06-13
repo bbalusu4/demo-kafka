@@ -1,7 +1,8 @@
 version: '3.8'
 services:
   broker:
-    image: apache/kafka:3.7.0 # Using a specific stable version is good practice
+    # Changed image name to full path
+    image: docker.io/apache/kafka:3.7.0
     hostname: broker
     container_name: broker
     ports:
@@ -21,7 +22,6 @@ services:
       KAFKA_PROCESS_ROLES: "broker,controller"
       KAFKA_NODE_ID: 1
       KAFKA_LOG_DIRS: "/tmp/kraft-combined-logs"
-      # Ensure advertised hostname matches container name for inter-container communication
       KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
       KAFKA_LISTENERS_CONTROLLER_HOST_NAME: broker
       KAFKA_LISTENERS_CONTROLLER_PORT: 29093
@@ -34,19 +34,18 @@ services:
         fi;
         exec kafka-server-start.sh config/kraft/server.properties
     volumes:
-      # Optional: Mount a custom server.properties if needed
       - ./config/kafka/server.properties:/opt/kafka/config/kraft/server.properties:ro
 
   kafka-ui:
-    image: provectuslabs/kafka-ui:latest
+    # Changed image name to full path
+    image: docker.io/provectuslabs/kafka-ui:latest
     container_name: kafka-ui
     ports:
       - "8080:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: local-kafka
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092 # Use the internal Docker network name and port
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092
       KAFKA_CLUSTERS_0_PROPERTIES_0_KEY: ssl.endpoint.identification.algorithm
       KAFKA_CLUSTERS_0_PROPERTIES_0_VALUE: ""
-      # KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181 # Only if using ZooKeeper-based Kafka
     depends_on:
       - broker
